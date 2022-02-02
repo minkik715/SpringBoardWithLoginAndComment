@@ -1,0 +1,92 @@
+<!DOCTYPE html>
+<html xmlns:th="http://www.thymeleaf.org">
+<head>
+    <meta charset="utf-8">
+    <link th:href="@{/css/bootstrap.min.css}" rel="stylesheet">
+    <style>
+        .container {
+            max-width: 560px;
+        }
+
+        .field-error {
+            border-color: #dc3545;
+            color: #dc3545;
+        }
+    </style>
+</head>
+<body>
+<div class="container">
+    <div class="py-5 text-center">
+        <h2>글작성</h2>
+    </div>
+    <label for="name">글 제목</label>
+    <input type="text" th:value="${board.name}" id="name" name="name" class="form-control" readonly>
+    <label for="contents">글 내용</label>
+    <textarea th:text="${board.contents}" name="contents" id="contents" cols="30" rows="10" class="form-control"
+              readonly></textarea>
+    <hr class="my-4">
+
+        <div class="row" th:if="${board.writerId.equals(userId)}">
+            <div class="col">
+                <button class="w-100 btn btn-primary btn-lg"
+                        th:onclick="|location.href='@{/boards/edit/{id}(id=${board.id})}'|">수정
+                </button>
+            </div>
+            <div class="col">
+                <button class="w-100 btn btn-secondary btn-lg"
+                        th:onclick="|location.href='@{/boards/delete/{id}(id=${board.id})}'|"
+                        type="button">삭제
+                </button>
+            </div>
+            <div class="col">
+                <button class="w-100 btn btn-secondary btn-lg"
+                        th:onclick="|location.href='@{/}'|">홈으로
+                </button>
+            </div>
+        </div>
+        <div class="row" th:unless="${board.writerId.equals(userId)}">
+            <div class="col">
+                <button class="w-100 btn btn-secondary btn-lg"
+                        th:onclick="|location.href='@{/}'|">홈으로
+                </button>
+            </div>
+        </div>
+
+
+    <div class="py-5 text-center">
+        <h4>댓글</h4>
+    </div>
+    <form th:action="|@{/boards/{id}/comment(id=${board.id})}|" method="post">
+
+        <label for="comment2">댓글</label>
+        <textarea name="comment" id="comment2" cols="30" rows="4" class="form-control"></textarea>
+        <hr class="my-4">
+        <div class="row">
+            <div class="col">
+                <button class="w-50 btn btn-primary btn-sm" type="submit">
+                    댓글작성
+                </button>
+            </div>
+        </div>
+
+    </form>
+    <div th:each="comment : ${comments}">
+        <label for="comment">작성자: [[${comment.writerName}]]</label>
+        <textarea th:text="${comment.comment}" id="comment" cols="30" rows="4" class="form-control" readonly></textarea>
+        <div class="row" th:if="${comment.writerName.equals(userName)}">
+            <button class="w-25 btn btn-primary btn-sm"
+                    th:onclick="|location.href='@{/boards/{boardsId}/comment/edit/{id}(boardsId=${board.id},id=${comment.id})}'|">
+                수정
+            </button>
+
+            <button class="w-25 btn btn-secondary btn-sm"
+                    th:onclick="|location.href='@{/boards/{boardsId}/comment/delete/{id}(boardsId=${board.id},id=${comment.id})}'|"
+                    type="button">삭제
+            </button>
+        </div>
+    </div>
+</div>
+
+</div>
+</body>
+</html>

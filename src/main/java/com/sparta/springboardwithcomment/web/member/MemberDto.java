@@ -1,0 +1,30 @@
+package com.sparta.springboardwithcomment.web.member;
+
+import lombok.Data;
+
+import javax.validation.constraints.NotEmpty;
+import javax.validation.constraints.Pattern;
+import javax.validation.constraints.Size;
+
+@Data
+public class MemberDto {
+
+    @NotEmpty
+    @Size(min=2, max=20)
+    private String name;
+
+    @NotEmpty
+    @Size(min=3, max=20)
+    private String userId;
+
+    @NotEmpty
+    @Pattern(regexp="[a-zA-Z1-9]{3,20}", message = "비밀번호는 영어와 숫자로 포함해서 3~20자리 이내로 입력해주세요.")
+    private String password;
+
+    @NotEmpty
+    @Pattern(regexp="[a-zA-Z1-9]{3,20}", message = "비밀번호는 영어와 숫자로 포함해서 3~20자리 이내로 입력해주세요.")
+    private String passwordCheck;
+
+
+
+}

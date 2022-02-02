@@ -1,0 +1,52 @@
+<!DOCTYPE html>
+<html xmlns:th="http://www.thymeleaf.org">
+<head>
+    <meta charset="UTF-8">
+    <link th:href="@{/css/bootstrap.min.css}" rel="stylesheet">
+    <title>게시판</title>
+</head>
+<body>
+<hr>
+
+
+
+<div class="row" th:if="${username.toString().equals('비로그인 유저')}">
+    <h2 align="center">게시판 목록</h2>
+    <hr class="my-4">
+        <div class="col">
+        <button class="w-25 btn btn-primary btn-sm" th:onclick="|location.href='@{/members/add}'|">회원가입</button>
+        <button class="w-25 btn btn-primary btn-sm" th:onclick="|location.href='@{/login}'|">로그인</button>
+        <h4>안녕하세요 [[${username}]]님!</h4>
+        </div>
+    </div>
+
+
+<div class="row" th:unless="${username.toString().equals('비로그인 유저')}">
+    <h2 align="center">게시판 목록</h2>
+    <hr class="my-4">
+        <div class="col">
+        <button class="w-25 btn btn-primary btn-sm" th:onclick="|location.href='@{/boards/add}'|">글 작성</button>
+        <button class="w-25 btn btn-primary btn-sm" th:onclick="|location.href='@{/logout}'|">로그아웃</button>
+        <h4>안녕하세요 [[${username}]]님!</h4>
+        </div>
+    </div>
+
+<hr>
+<table border="1" style="width: 100%; height: 1cm" ; th:each="board : ${boards}">
+    <tr>
+        <td align="center" width="10%"><strong>번호</strong></td>
+        <td align="center" width="70%"><strong>제목</strong></td>
+        <td align="center" width="10%"><strong>글쓴이</strong></td>
+        <td align="center" width="10%"><strong>등록일</strong></td>
+    </tr>
+    <tr>
+        <td align="center" th:text="${board.id}">번호</td>
+        <td align="left"><a th:text="${board.name}" th:href="@{|/boards/${board.id}|}">제목</a></td>
+        <td align="center" th:text="${board.writerId}">글쓴이</td>
+        <td align="center" th:text="${board.getModifiedAt()}">시간</td>
+    </tr>
+
+
+</table>
+</body>
+</html>
