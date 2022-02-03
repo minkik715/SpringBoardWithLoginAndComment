@@ -9,7 +9,6 @@ import org.springframework.validation.BindingResult;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.ModelAttribute;
 import org.springframework.web.bind.annotation.PostMapping;
-import org.springframework.web.bind.annotation.RequestMapping;
 
 import javax.servlet.http.Cookie;
 import javax.servlet.http.HttpServletRequest;
@@ -25,7 +24,7 @@ public class LoginController {
 
     @GetMapping("/login")
     public String loginForm(@ModelAttribute("form") LoginDto form){
-        return "/login/form";
+        return "login/form";
     }
 
     @PostMapping("/login")
@@ -38,7 +37,7 @@ public class LoginController {
 
         if(bindingResult.hasErrors()){
             log.info("error={}", bindingResult);
-            return "/login/form";
+            return "login/form";
         }
 
         //로그인 성공

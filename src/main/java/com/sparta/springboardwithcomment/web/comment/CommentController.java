@@ -41,7 +41,7 @@ public class CommentController {
     @GetMapping("{boardId}/comment/edit/{id}")
     public String commentEditForm(@PathVariable Long boardId, @PathVariable Long id, Model model){
         commentService.editForm(id, boardId, model);
-        return"/boards/editComment";
+        return"boards/editComment";
     }
 
 

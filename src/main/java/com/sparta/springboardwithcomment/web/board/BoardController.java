@@ -33,12 +33,12 @@ public class BoardController {
     @GetMapping
     public String showBoards(Model model, HttpServletRequest request) {
        boardService.showAllBoards(model,request);
-        return "/boards/boards";
+        return "boards/boards";
     }
 
     @GetMapping("/add")
     public String boardForm(@ModelAttribute("board") BoardDto boardDto) {
-        return "/boards/form";
+        return "boards/form";
     }
 
     @PostMapping("/add")
@@ -46,7 +46,7 @@ public class BoardController {
 
         if (bindingResult.hasErrors()) {
             log.info("error={}", bindingResult);
-            return "/boards/form";
+            return "boards/form";
         }
         boardService.saveBoard(board, request);
         return "redirect:/";
@@ -56,7 +56,7 @@ public class BoardController {
     public String getBoard(@PathVariable Long id, Model model, HttpServletRequest request) {
         boardService.showBoard(id, model, request);
         commentService.findAllComments(id, model);
-        return "/boards/board";
+        return "boards/board";
     }
 
     @GetMapping("/delete/{id}")
@@ -69,14 +69,14 @@ public class BoardController {
     @GetMapping("/edit/{id}")
     public String editForm(@PathVariable Long id, Model model) {
         boardService.editForm(id, model);
-        return "/boards/editForm";
+        return "boards/editForm";
     }
 
     @PostMapping("/edit/{id}")
     public String editBoard(@PathVariable Long id, @Validated @ModelAttribute("board") BoardDto board, BindingResult bindingResult) {
 
         if (bindingResult.hasErrors()) {
-            return "/boards/editForm";
+            return "boards/editForm";
         }
 
         boardService.editBoard(id, board);

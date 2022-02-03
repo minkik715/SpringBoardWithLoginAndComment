@@ -23,7 +23,7 @@ public class MemberController {
     private final MemberService memberService;
     @GetMapping("/members/add")
     public String memberAddForm(@ModelAttribute("member") MemberDto member){
-        return "/members/form";
+        return "members/form";
     }
 
     @PostMapping("/members/add")
@@ -49,7 +49,7 @@ public class MemberController {
         //회원 가입 실패
         if(bindingResult.hasErrors()){
             log.info("error={}", bindingResult);
-            return "/members/form";
+            return "members/form";
         }
 
         memberService.signUp(member);
