@@ -1,5 +1,6 @@
 package com.sparta.springboardwithcomment.web.member;
 
+import com.fasterxml.jackson.core.JsonProcessingException;
 import com.sparta.springboardwithcomment.domain.member.Member;
 import com.sparta.springboardwithcomment.domain.member.MemberRepository;
 import lombok.RequiredArgsConstructor;
@@ -8,26 +9,24 @@ import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.stereotype.Controller;
 import org.springframework.validation.BindingResult;
 import org.springframework.validation.annotation.Validated;
-import org.springframework.web.bind.annotation.GetMapping;
-import org.springframework.web.bind.annotation.ModelAttribute;
-import org.springframework.web.bind.annotation.PostMapping;
-import org.springframework.web.bind.annotation.RequestMapping;
+import org.springframework.web.bind.annotation.*;
+
+import javax.servlet.http.HttpServletRequest;
 
 @RequiredArgsConstructor
 @Controller
 @Slf4j
-@RequestMapping("/members")
 public class MemberController {
 
-    private final PasswordEncoder passwordEncoder;
-    private final MemberRepository memberRepository;
 
-    @GetMapping("/add")
+    private final MemberRepository memberRepository;
+    private final MemberService memberService;
+    @GetMapping("/members/add")
     public String memberAddForm(@ModelAttribute("member") MemberDto member){
         return "/members/form";
     }
 
-    @PostMapping("/add")
+    @PostMapping("/members/add")
     public String memberSave(@Validated @ModelAttribute("member") MemberDto member, BindingResult bindingResult){
 
         if(!member.getPassword().equals(member.getPasswordCheck())){
@@ -52,14 +51,18 @@ public class MemberController {
             log.info("error={}", bindingResult);
             return "/members/form";
         }
-        String encodingPassword = passwordEncoder.encode(member.getPassword());
-        //회원 가입 성공
-        Member saveMember = new Member(member.getName(),member.getUserId(), encodingPassword);
-        log.info("saveMember={}", saveMember);
-        memberRepository.save(saveMember);
 
+        memberService.signUp(member);
         return "redirect:/login";
 
+    }
+
+    @GetMapping("/user/kakao/callback")
+    public String kakaoLogin(@RequestParam String code, HttpServletRequest request) throws JsonProcessingException {
+// authorizedCode: 카카오 서버로부터 받은 인가 코드
+        log.info("Hello here!");
+        memberService.kakaoLogin(code, request);
+        return "redirect:/";
     }
 
 }

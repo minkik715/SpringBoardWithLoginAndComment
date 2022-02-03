@@ -2,20 +2,20 @@ package com.sparta.springboardwithcomment.domain.member;
 
 
 import lombok.Data;
+import lombok.NoArgsConstructor;
 
 import javax.persistence.*;
-import java.util.HashMap;
-import java.util.Map;
-import java.util.concurrent.ConcurrentHashMap;
 
 @Data
 @Entity
+@NoArgsConstructor
 public class Member {
 
-    public Member(String name, String userId, String password) {
+    public Member(String name, String userId, String password ) {
         this.name = name;
         this.userId = userId;
         this.password = password;
+        this.KakaoId = null;
     }
 
     @Id
@@ -31,8 +31,14 @@ public class Member {
     @Column(nullable = false)
     private String password;
 
+    @Column(nullable = true)
+    private Long KakaoId;
 
-    public Member() {
 
+    public Member(String name, String userId, String password, Long KakaoId) {
+        this.name = name;
+        this.userId = userId;
+        this.password = password;
+        this.KakaoId = KakaoId;
     }
 }

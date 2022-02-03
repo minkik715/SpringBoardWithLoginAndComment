@@ -61,6 +61,8 @@ public class BoardController {
 
     @GetMapping("/delete/{id}")
     public String deleteBoard(@PathVariable Long id, @ModelAttribute Board board) {
+
+        boardService.deleteBoard(id);
         return "redirect:/";
     }
 
